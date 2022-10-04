@@ -28,6 +28,22 @@ namespace TimeLogger.DomainService.Tasks
            return await _repository.GetByName(TaskName,paging);
         }
 
+        public async Task<TaskModel> FindById(int id)
+        {
+            return await _repository.FindById(id);
+        }
+
+        public async Task<TaskModel> Update(TaskModel taskModel)
+        {
+            return await _repository.Update(taskModel);
+        }
+
+        public async Task<bool> Delete(int id)
+        {
+            return await _repository.Delete(id);
+        }
+
+
         private async Task ValidateTaskAndThrow(TaskModel task)
         {
             var validator = new TaskValidator();

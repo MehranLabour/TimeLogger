@@ -23,7 +23,6 @@ namespace API.Controllers
         [HttpPost]
         public async Task<ActionResult> Create([FromBody] TaskView task)
         {
-            var here = "lop";
             var result = await _service.Add(task);
             return Ok(new Response<TaskView>(result, "Record Created Successfully", true));
         }
@@ -39,6 +38,32 @@ namespace API.Controllers
             var result = await _service.GetByName(name, paging);
             return Ok(new PagedResponse<List<TaskView>>(result, pagenumber, pagesize));
         }
-        
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult<TaskView>> Get(int id)
+        {
+            var result = await _service.FindById(id);
+
+            if (result == null)
+                return NotFound(new Response<TaskView>(result, "No Record Found", false));
+            return Ok(new Response<TaskView>(result, null, true));
+        }
+
+        public async Task<IActionResult> Update([FromBody] TaskView task)
+        {
+            var result= await _service.Update(task);
+            if (result == null)
+                return NotFound(new Response<TaskView>(result, "No Record Found", false));
+            return Ok(new Response<TaskView>(result, "Record Updated Successfully", true));
+
+        }
+        [HttpDelete]
+        public async Task<ActionResult> Delete(int id)
+        {
+            var result = await _service.Delete(id);
+            if (result == false)
+                return NotFound(new Response<ProjectView>(null, "No Such Record Found", false));
+            return Ok(new Response<ProjectView>(null, "Record Deleted Successfully", true));
+        }
+
     }
 }
