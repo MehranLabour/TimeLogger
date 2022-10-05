@@ -42,8 +42,6 @@ namespace TimeLogger.DomainService.Tasks
         {
             return await _repository.Delete(id);
         }
-
-
         private async Task ValidateTaskAndThrow(TaskModel task)
         {
             var validator = new TaskValidator();

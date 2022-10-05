@@ -11,7 +11,7 @@ namespace TimeLogger.Model.Tasks
         public string Name { get; set; } = null!;
         public int EstimatedTimeMinutes { get; set; }
         public int ProjectId { get; set; }
-        public ProjectModel? ProjectModel { get; set; } = null!;
+        public ProjectModel? Project { get; set; } = null!;
         public List<LogModel>? Logs { get; set; } = null!;
     }
 }
