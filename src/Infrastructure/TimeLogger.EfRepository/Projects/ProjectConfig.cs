@@ -11,8 +11,10 @@ namespace TimeLogger.EfRepository.Projects
     {
         public void Configure(EntityTypeBuilder<ProjectModel> builder)
         {
-            builder.ToTable("projectModel");
-            builder.HasMany(e => e.Tasks).WithOne(e=>e.ProjectModel).HasForeignKey(e=>e.ProjectId);
+            builder.ToTable("Project");
+            builder.HasMany(e => e.Tasks)
+                .WithOne(e=>e.Project)
+                .HasForeignKey(e=>e.ProjectId);
             builder.Property(e => e.Name).IsRequired().HasColumnType("nvarchar").HasMaxLength(200);
             builder.Property(e => e.PricePerHour).IsRequired(false).HasColumnType("decimal").HasPrecision(18, 2);
         }

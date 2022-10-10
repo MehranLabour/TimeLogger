@@ -53,8 +53,10 @@ namespace API.Controllers
         [HttpPut]
         public async Task<IActionResult> Update([FromBody] ProjectView project)
         {
-            var updatedproject = await _service.Update(project);
-            return Ok(new Response<ProjectView>(updatedproject, "Record Updated Successfully", true));
+            var updatedProject = await _service.Update(project);
+            if (updatedProject == null)
+                return NotFound(new Response<ProjectView>(updatedProject, "No Record Found", false));
+            return Ok(new Response<ProjectView>(updatedProject, "Record Updated Successfully", true));
         }
 
         [HttpDelete]
@@ -63,7 +65,7 @@ namespace API.Controllers
             var result = await _service.Delete(id);
             if (result == false)
                 return NotFound(new Response<ProjectView>(null, "No Such Record Found", false));
-            return Ok(new Response<ProjectView>(null, "record Deleted Successfully", true));
+            return Ok(new Response<ProjectView>(null, "Record Deleted Successfully", true));
         }
     }
 }

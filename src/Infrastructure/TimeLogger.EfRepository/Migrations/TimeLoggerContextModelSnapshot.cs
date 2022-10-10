@@ -30,7 +30,8 @@ namespace TimeLogger.EfRepository.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(800)
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("EndsAt")
                         .HasColumnType("datetime2");
@@ -54,7 +55,7 @@ namespace TimeLogger.EfRepository.Migrations
 
                     b.HasIndex("TaskId");
 
-                    b.ToTable("LogModel");
+                    b.ToTable("Log");
                 });
 
             modelBuilder.Entity("TimeLogger.Model.Projects.ProjectModel", b =>
@@ -87,7 +88,7 @@ namespace TimeLogger.EfRepository.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("projectModel");
+                    b.ToTable("Project");
                 });
 
             modelBuilder.Entity("TimeLogger.Model.Tasks.TaskModel", b =>
@@ -105,7 +106,7 @@ namespace TimeLogger.EfRepository.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar");
 
                     b.Property<int>("ProjectId")
                         .HasColumnType("int");
@@ -136,13 +137,13 @@ namespace TimeLogger.EfRepository.Migrations
 
             modelBuilder.Entity("TimeLogger.Model.Tasks.TaskModel", b =>
                 {
-                    b.HasOne("TimeLogger.Model.Projects.ProjectModel", "ProjectModel")
+                    b.HasOne("TimeLogger.Model.Projects.ProjectModel", "Project")
                         .WithMany("Tasks")
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("ProjectModel");
+                    b.Navigation("Project");
                 });
 
             modelBuilder.Entity("TimeLogger.Model.Projects.ProjectModel", b =>

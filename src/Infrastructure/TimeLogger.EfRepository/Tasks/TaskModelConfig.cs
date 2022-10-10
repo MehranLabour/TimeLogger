@@ -13,6 +13,10 @@ namespace TimeLogger.EfRepository.Tasks
             builder.HasKey(e => e.Id);
             builder.HasMany(e => e.Logs)
                 .WithOne(e => e.Task).HasForeignKey(e=>e.TaskId);
+            builder.Property(e => e.Name).IsRequired().HasColumnType("nvarchar");
+            builder.Property(e => e.EstimatedTimeMinutes).IsRequired();
         }
     }
 }
+
+

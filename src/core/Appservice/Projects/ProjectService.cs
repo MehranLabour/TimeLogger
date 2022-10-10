@@ -31,7 +31,8 @@ namespace TimeLogger.AppService.Projects
         public async Task<ProjectView> Update(ProjectView projectView)
         {
             var project = await _domain.Update(ToProject(projectView));
-            return ToProjectView(project);
+            return project == null ? null : ToProjectView(project);
+
         }
 
         public async Task<List<ProjectView>> GetByName(string projectName, Paging paging)
@@ -74,7 +75,6 @@ namespace TimeLogger.AppService.Projects
                 EstimatedTimeMinutes = taskModel.EstimatedTimeMinutes,
             };
         }
-
         private ProjectModel ToProject(ProjectView projectView)
         {
             return new ProjectModel

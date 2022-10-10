@@ -30,8 +30,11 @@ namespace TimeLogger.EfRepository.Projects
                 .Include(e => e.Tasks)
                 .Where(p => p.Id == projectModel.Id)
                 .FirstOrDefaultAsync();
-            dbProjectModel.Name = projectModel.Name;
-            await _context.SaveChangesAsync();
+            if (dbProjectModel!=null)
+            {
+                dbProjectModel.Name = projectModel.Name;
+                await _context.SaveChangesAsync();
+            }
             return dbProjectModel;
         }
 

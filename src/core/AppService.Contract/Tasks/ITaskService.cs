@@ -19,7 +19,7 @@ namespace TimeLogger.AppService.Contract.Tasks
         /// </summary>
         /// <param name="taskView"></param>
         /// <returns>true if operation succeeded and false if operation failed</returns>
-        public Task<bool> Update(TaskView taskView);
+        public Task<TaskView> Update(TaskView taskView);
 
         /// <summary>
         /// </summary>
@@ -35,6 +35,13 @@ namespace TimeLogger.AppService.Contract.Tasks
         /// <param name="id"></param>
 
         /// <returns>find or fail for finding task that id given</returns>
-        public Task<TaskView> findById(int id);
+        public Task<TaskView> FindById(int id);
+        /// <summary>
+        /// </summary>
+        /// <param name="id"></param>
+
+        /// <returns>find or fail for finding item And Delete it,
+        /// if succeeded return true if failed return false </returns>
+        public Task<bool> Delete(int id);
     }
 }

@@ -32,6 +32,12 @@ namespace TimeLogger.AppService.Contract.Projects
 
         /// <returns>find or fail for finding project that id given</returns>
         public Task<ProjectView?> FindById(int id);
+        /// <summary>
+        /// </summary>
+        /// <param name="id"></param>
+
+        /// <returns>find or fail for finding item And Delete it,
+        /// if succeeded return true if failed return false </returns>
         public Task<bool> Delete(int id);
 
     }
