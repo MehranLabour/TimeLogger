@@ -1,23 +1,20 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+using TimeLogger.AppService.Contract.Logs;
 using TimeLogger.AppService.Contract.Projects;
 using TimeLogger.AppService.Contract.Tasks;
+using TimeLogger.AppService.Logs;
 using TimeLogger.AppService.Projects;
 using TimeLogger.AppService.Tasks;
+using TimeLogger.DomainService.Logs;
 using TimeLogger.DomainService.Projects;
 using TimeLogger.DomainService.Tasks;
 using TimeLogger.EfRepository;
+using TimeLogger.EfRepository.Logs;
 using TimeLogger.EfRepository.Projects;
 using TimeLogger.EfRepository.Tasks;
 
@@ -41,12 +38,16 @@ namespace API
             });
             services.AddControllers();
             services.AddTransient<IProjectService, ProjectService>();
-            services.AddTransient<IProjectDomain,ProjectDomain>();
+            services.AddTransient<IProjectDomain, ProjectDomain>();
             services.AddTransient<IProjectRepository, ProjectRepository>();
-            
+
             services.AddTransient<ITaskService, TaskService>();
-            services.AddTransient<ITaskDomain,TaskDomain>();
+            services.AddTransient<ITaskDomain, TaskDomain>();
             services.AddTransient<ITaskRepository, TaskRepository>();
+
+            services.AddTransient<ILogService, LogService>();
+            services.AddTransient<ILogDomain, LogDomain>();
+            services.AddTransient<ILogRepository, LogRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -63,10 +64,7 @@ namespace API
 
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
     }
 }

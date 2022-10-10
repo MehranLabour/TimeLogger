@@ -2,7 +2,7 @@
 
 namespace TimeLogger.EfRepository.Migrations
 {
-    public partial class myMigration : Migration
+    public partial class nextone : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

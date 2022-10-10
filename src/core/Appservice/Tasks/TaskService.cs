@@ -29,16 +29,35 @@ namespace TimeLogger.AppService.Tasks
             var taskmodel = await _domain.Add(task);
             return ToTaskView(taskmodel);
         }
+
+        public async Task<TaskView> Update(TaskView taskView)
+        {
+            var task = await _domain.Update(ToTask(taskView));
+            return task == null ? null : ToTaskView(task);
+        }
+
         public async Task<List<TaskView>> GetByName(string TaskName, Paging paging)
         {
             var tasks = await _domain.GetByName(TaskName, paging);
             return tasks.Select(ToTaskView).ToList();
         }
 
+        public async Task<TaskView?> FindById(int id)
+        {
+            var task = await _domain.FindById(id);
+            return task == null ? null : ToTaskView(task);
+        }
+
+        public async Task<bool> Delete(int id)
+        {
+            return await _domain.Delete(id);
+        }
+
         private TaskView ToTaskView(TaskModel taskModel)
         {
             return new TaskView
             {
+                Id = taskModel.Id,
                 Name = taskModel.Name,
                 Status = taskModel.Status,
                 EstimatedTimeMinutes = taskModel.EstimatedTimeMinutes,
@@ -51,6 +70,7 @@ namespace TimeLogger.AppService.Tasks
         {
             return new LogView
             {
+                Id = logModel.Id,
                 Description = logModel.Description,
                 StartsAt = logModel.StartsAt,
                 EndsAt = logModel.EndsAt,
@@ -61,6 +81,7 @@ namespace TimeLogger.AppService.Tasks
         {
             return new TaskModel
             {
+                Id = taskView.Id,
                 Name = taskView.Name,
                 Status = taskView.Status,
                 EstimatedTimeMinutes = taskView.EstimatedTimeMinutes,
@@ -72,19 +93,6 @@ namespace TimeLogger.AppService.Tasks
         {
             var validator = new TaskViewValidator();
             await validator.ValidateAndThrowAsync(taskView);
-        }
-
-        public Task<bool> Update(TaskView taskView)
-        {
-            throw new NotImplementedException();
-        }
-
-
-        
-
-        public Task<TaskView> findById(int id)
-        {
-            throw new NotImplementedException();
         }
     }
 }
