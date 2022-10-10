@@ -75,7 +75,6 @@ namespace TimeLogger.AppService.Projects
                 EstimatedTimeMinutes = taskModel.EstimatedTimeMinutes,
             };
         }
-
         private ProjectModel ToProject(ProjectView projectView)
         {
             return new ProjectModel
