@@ -1,5 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
+using TimeLogger.AppService.Contract.Exceptions;
 using TimeLogger.AppService.Contract.Logs;
 using TimeLogger.AppService.Contract.Wrappers;
 
@@ -20,8 +23,24 @@ namespace API.Controllers
         [HttpPost]
         public async Task<ActionResult> Create([FromBody] LogView log)
         {
-            var result = await _service.Add(log);
-            return Ok(new Response<LogView>(result, "Record Created Successfully", true));
+            try
+            {
+                var result = await _service.Add(log);
+                return Ok(new Response<LogView>(result, "Record Created Successfully", true));
+            }
+            catch (ValidationException ex)
+            {
+                return NotFound(new Response<LogView>(null, ex.Message, false));
+                //Console.WriteLine(ex.Message );
+            }
+            catch (IsOverLapException ex)
+            {
+                return NotFound(new Response<LogView>(null, ex.Message, false));
+            }
+            catch (Exception ex)
+            {
+                return NotFound(new Response<LogView>(null, ex.Message, false));
+            }
         }
 
         [HttpGet("{id:int}")]
@@ -33,6 +52,7 @@ namespace API.Controllers
                 return NotFound(new Response<LogView>(log, "No Record Found", false));
             return Ok(new Response<LogView>(log, null, true));
         }
+
         [HttpPut]
         public async Task<IActionResult> Update([FromBody] LogView log)
         {
@@ -41,6 +61,7 @@ namespace API.Controllers
                 return NotFound(new Response<LogView>(updatedLog, "No Record Found", false));
             return Ok(new Response<LogView>(updatedLog, "Record Updated Successfully", true));
         }
+
         [HttpDelete]
         public async Task<ActionResult> Delete(int id)
         {
@@ -49,10 +70,10 @@ namespace API.Controllers
                 return NotFound(new Response<LogView>(null, "No Such Record Found", false));
             return Ok(new Response<LogView>(null, "Record Deleted Successfully", true));
         }
+
         [HttpDelete("hard-delete")]
         public async Task<ActionResult> HardDelete(int id)
         {
-           
             var result = await _service.HardDelete(id);
             if (result == false)
                 return NotFound(new Response<LogView>(null, "No Such Record Found", false));
