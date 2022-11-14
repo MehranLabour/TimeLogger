@@ -60,7 +60,7 @@ namespace TimeLogger.DomainService.Logs
                {
                    //return true;
                    throw new IsOverLapException(
-                       "dates of log over Lapped");
+                       "dates of log is over Lapped");
                }
            }
 

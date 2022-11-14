@@ -11,5 +11,17 @@
     <ProjectReference Include="..\src\Infrastructure\TimeLogger.EfRepository\TimeLogger.EfRepository.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+<!--    <PackageReference Include="NLog.Targets.Sentry3" Version="4.0.35" />-->
+    <PackageReference Include="NLog.Web.AspNetCore" Version="5.1.4" />
+    <PackageReference Include="Sentry.NLog" Version="3.22.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="nlog.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 
 </Project>

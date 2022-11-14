@@ -4,7 +4,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using TimeLogger.AppService.Contract;
 using TimeLogger.AppService.Contract.Logs;
+using TimeLogger.AppService.Contract.Middlewares;
 using TimeLogger.AppService.Contract.Projects;
 using TimeLogger.AppService.Contract.Tasks;
 using TimeLogger.AppService.Logs;
@@ -48,16 +50,22 @@ namespace API
             services.AddTransient<ILogService, LogService>();
             services.AddTransient<ILogDomain, LogDomain>();
             services.AddTransient<ILogRepository, LogRepository>();
+            services.AddScoped<IJwtService, JwtService>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.CustomExceptionHandler();
+           // app.UseMiddleware<CustomExceptionHandlerMiddleware>();
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+               // app.UseDeveloperExceptionPage();
+            }else
+            {
+               // app.UseExceptionHandler();
             }
-
             app.UseHttpsRedirection();
 
             app.UseRouting();

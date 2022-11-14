@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
+using TimeLogger.AppService.Contract;
 using TimeLogger.AppService.Contract.Exceptions;
 using TimeLogger.AppService.Contract.Logs;
 using TimeLogger.AppService.Contract.Wrappers;
@@ -14,33 +15,19 @@ namespace API.Controllers
     public class LogController : Controller
     {
         private readonly ILogService _service;
+        private readonly IJwtService _jwtService;
 
-        public LogController(ILogService service)
+        public LogController(ILogService service,IJwtService jwtService)
         {
             _service = service;
+            _jwtService = jwtService;
         }
 
         [HttpPost]
         public async Task<ActionResult> Create([FromBody] LogView log)
         {
-            try
-            {
-                var result = await _service.Add(log);
-                return Ok(new Response<LogView>(result, "Record Created Successfully", true));
-            }
-            catch (ValidationException ex)
-            {
-                return NotFound(new Response<LogView>(null, ex.Message, false));
-                //Console.WriteLine(ex.Message );
-            }
-            catch (IsOverLapException ex)
-            {
-                return NotFound(new Response<LogView>(null, ex.Message, false));
-            }
-            catch (Exception ex)
-            {
-                return NotFound(new Response<LogView>(null, ex.Message, false));
-            }
+            var result = await _service.Add(log);
+            return Ok(new Response<LogView>(result, "Record Created Successfully", true));
         }
 
         [HttpGet("{id:int}")]

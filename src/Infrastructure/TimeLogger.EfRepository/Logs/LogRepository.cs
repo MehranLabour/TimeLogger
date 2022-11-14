@@ -13,13 +13,11 @@ namespace TimeLogger.EfRepository.Logs
     public class LogRepository : ILogRepository
     {
         private readonly TimeLoggerContext _context;
-
+        
         public LogRepository(TimeLoggerContext context)
         {
             _context = context;
         }
-
-        
 
         public async Task<LogModel> Add(LogModel logModel)
         {
@@ -38,7 +36,6 @@ namespace TimeLogger.EfRepository.Logs
                 dbLog.Description = logModel.Description;
                 _context.SaveChangesAsync();
             }
-
             return dbLog;
         }
 

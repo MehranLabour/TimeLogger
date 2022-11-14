@@ -6,6 +6,5 @@ namespace TimeLogger.DomainService
 {
     public interface IRepositoryService
     {
-
     }
 }
